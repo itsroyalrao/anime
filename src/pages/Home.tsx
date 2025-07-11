@@ -18,7 +18,8 @@ interface Anime {
   };
 }
 
-const apiUrl = "http://localhost:4000";
+// const apiUrl = "http://localhost:4444";
+const apiUrl = "https://anime-backend-4ev6.onrender.com";
 
 const fetchTopAnimes = async () => {
   const response = await axios(`${apiUrl}/api/top-ten`);
@@ -29,8 +30,8 @@ const fetchTopAnimes = async () => {
 
 export default function Home() {
   const [today, setToday] = useState<Anime[]>([]);
-  const [weekly, setWeekly] = useState<Anime[]>([]);
-  const [monthly, setMonthly] = useState<Anime[]>([]);
+  // const [weekly, setWeekly] = useState<Anime[]>([]);
+  // const [monthly, setMonthly] = useState<Anime[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -38,8 +39,8 @@ export default function Home() {
       try {
         const data = await fetchTopAnimes();
         setToday(data.today);
-        setWeekly(data.weekly);
-        setMonthly(data.monthly);
+        // setWeekly(data.weekly);
+        // setMonthly(data.monthly);
       } catch (error) {
         console.error("Error fetching top animes:", error);
       } finally {

@@ -5,10 +5,13 @@ import { useParams } from "react-router-dom";
 import LayoutShell from "../../components/LayoutShell";
 import Loading from "../../components/Loading";
 import EpisodeCard, { type Episode } from "../../components/cards/EpisodeCard";
-import AnimeInfo, { type AnimeInfoProps } from "../../components/AnimePage/AnimeInfo";
+import AnimeInfo, {
+  type AnimeInfoProps,
+} from "../../components/AnimePage/AnimeInfo";
 import VideoPlayer from "../../components/VideoPlayer";
 
-const apiUrl = "http://localhost:4000";
+// const apiUrl = "http://localhost:4444";
+const apiUrl = "https://anime-backend-4ev6.onrender.com";
 
 interface Server {
   serverName: string;
@@ -30,7 +33,9 @@ const getAnimeInfo = async (id: string | undefined) => {
 
 const getEpisodes = async ({ id }: { id: string | undefined }) => {
   try {
-    const res = await axios.get(`${apiUrl}/api/episodes/${id}`, { params: { id } });
+    const res = await axios.get(`${apiUrl}/api/episodes/${id}`, {
+      params: { id },
+    });
     return res.data.results.episodes as Episode[];
   } catch (err) {
     console.error("Failed to fetch episodes", err);
@@ -47,7 +52,11 @@ const getServers = async (episodeId: string) => {
   }
 };
 
-const getVideoStream = async (episodeId: string, serverName: string, type: string) => {
+const getVideoStream = async (
+  episodeId: string,
+  serverName: string,
+  type: string
+) => {
   try {
     const res = await axios.get(`${apiUrl}/api/stream`, {
       params: { id: episodeId, server: serverName, type },
@@ -87,7 +96,9 @@ export default function AnimePage() {
 
           // Pick preferred server by name + type, fallback to first matching type, then first server
           const preferredServer =
-            allServers.find((s) => s.serverName === "HD-1" && s.type === selectedType) ||
+            allServers.find(
+              (s) => s.serverName === "HD-1" && s.type === selectedType
+            ) ||
             allServers.find((s) => s.type === selectedType) ||
             allServers[0];
 
@@ -126,7 +137,11 @@ export default function AnimePage() {
       const server = filteredServers[selectedServerIndex] || filteredServers[0];
       if (!server) return;
 
-      const stream = await getVideoStream(episodeId, server.serverName, server.type);
+      const stream = await getVideoStream(
+        episodeId,
+        server.serverName,
+        server.type
+      );
       setVideoStream(stream);
     };
 
@@ -141,7 +156,7 @@ export default function AnimePage() {
     );
   }
 
-  console.log('videoStream', videoStream);
+  console.log("videoStream", videoStream);
   return (
     <LayoutShell>
       <VideoPlayer
